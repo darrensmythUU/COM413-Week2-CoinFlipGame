@@ -1,6 +1,8 @@
 package com.example.coinflipgame;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -34,17 +36,23 @@ public class MainActivity extends AppCompatActivity {
         score.setText("Correct Guesses: 0");
 
         btn_heads = (Button) findViewById(R.id.heads_btn);
+        btn_heads.setTextColor(Color.BLACK);
         btn_heads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btn_heads.setTextColor(Color.BLACK);
+                btn_tails.setTextColor(Color.WHITE);
                 predict = true;
             }
         });
 
         btn_tails = (Button) findViewById(R.id.tails_btn);
+        btn_tails.setTextColor(Color.WHITE);
         btn_tails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btn_heads.setTextColor(Color.WHITE);
+                btn_tails.setTextColor(Color.BLACK);
                 predict = false;
             }
         });
