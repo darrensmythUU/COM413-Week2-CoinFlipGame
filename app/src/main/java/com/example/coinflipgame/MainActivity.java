@@ -9,13 +9,20 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     public static final Random RANDOM = new Random();
     private ImageView coin;
-    private Button btn;
+    private Button btn_flip;
+    private Button btn_heads;
+    private Button btn_tails;
+    public TextView score;
+    public int score_num = 0;
+    private boolean result = true;
+    private boolean predict = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +30,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         coin = (ImageView) findViewById(R.id.coin);
-        btn = (Button) findViewById(R.id.btn);
+        score = (TextView) findViewById(R.id.score_txt);
+        score.setText("Correct Guesses: 0");
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btn_heads = (Button) findViewById(R.id.heads_btn);
+        btn_heads.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                predict = true;
+            }
+        });
+
+        btn_tails = (Button) findViewById(R.id.tails_btn);
+        btn_tails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                predict = false;
+            }
+        });
+
+        btn_flip = (Button) findViewById(R.id.flip_btn);
+        btn_flip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 flipCoin();
@@ -46,7 +71,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                coin.setImageResource(RANDOM.nextFloat() > 0.5f ? R.drawable.pound_tails : R.drawable.pound_heads);
+                // coin.setImageResource(RANDOM.nextFloat() > 0.5f ? R.drawable.pound_tails : R.drawable.pound_heads);
+                if (RANDOM.nextFloat() > 0.5f) {
+                    coin.setImageResource(R.drawable.pound_tails);
+                    result = false;
+                } else {
+                    coin.setImageResource(R.drawable.pound_heads);
+                    result = true;
+                }
+
+                if (predict == result) {
+                    score_num++;
+                }
 
                 Animation fadeIn = new AlphaAnimation(0, 1);
                 fadeIn.setInterpolator(new DecelerateInterpolator());
@@ -54,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 fadeIn.setFillAfter(true);
 
                 coin.startAnimation(fadeIn);
+                score.setText("Correct Guesses: " + Integer.toString(score_num));
             }
 
             @Override
